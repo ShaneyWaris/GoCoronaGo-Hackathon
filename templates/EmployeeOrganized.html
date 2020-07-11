@@ -23,7 +23,7 @@
         <div class="account-page">
             <div class="account-center">
                 <div class="account-box">
-                    <form action="login.html" class="form-signin">
+                    <form action="/EmployeeOrganized" method="post" class="form-signin">
                         <div class="account-logo">
                             <a href="#"><img src="{{url_for('static', filename='assets/img/logoo.png')}}" style="width: 80px; height: 2300px;" alt=""></a>
                         </div>
@@ -69,10 +69,7 @@
                         </div>
                         <br><br>
                         <div class="form-group text-center ">
-                            <button class="btn btn-primary account-btn " type="submit " onclick=" window.open('login.html')" style="background-color: #606EB3;">SignUp</button>
-
-
-
+                            <button class="btn btn-primary account-btn " type="submit" style="background-color: #606EB3;">SignUp</button>
                         </div>
                         <div class="text-center login-link">
                             Already have an account? <a href="{{ url_for('login')}} ">Login</a>

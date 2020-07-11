@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from bson import ObjectId
 
-connection = MongoClient("mongodb+srv://test:test>@cluster0.cxhd5.mongodb.net/<dbname>?retryWrites=true&w=majority")
+connection = MongoClient("mongodb+srv://test:test@cluster0.cxhd5.mongodb.net/test?retryWrites=true&w=majority")
 
 Employees_database = connection.get_database('Employees_DB')	# to fetch the database
 
