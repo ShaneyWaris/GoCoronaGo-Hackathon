@@ -1,6 +1,6 @@
 import os
-from flask import Flask, render_template, request, jsonify
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
+from databse import *
 
 app = Flask(__name__, static_url_path='')
 
@@ -10,7 +10,7 @@ def home():
 
 @app.route('/about')
 def About():
-    return render_template('about.html', title='About')
+	return render_template('about.html', title='About')
 
 @app.route('/index')
 def index():
@@ -66,14 +66,9 @@ def EmployerProfile():
 def FixMeeting():
 	return render_template('FixMeeting.html')
 
-
 @app.route('/takeMeetings')
 def takeMeetings():
 	return render_template('takeMeetings.html')
-
-# @app.route('/startMeeting')
-# def startMeeting():
-# 	return render_template('startMeeting.html')
 
 @app.route('/startMeetingEmployer')
 def startMeetingEmployer():
@@ -87,19 +82,33 @@ def startMeeting():
 def EmployeeInterview():
 	return render_template('EmployeeInterview.html')
 
+database = {'hello':'123'}
+# start fetching the details.
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-	if request.method=='POST':
-		Username = request.form.get('Username')
-		Password = request.form.get('Password')
-		app.logger.info("******* Username = ", Username)
-		app.logger.info("******* Password = ", Password)
-		if(Username == "admin" and Password == "admin"):
-			return redirect(url_for('index'))
-		else:
-			return redirect(url_for('login'))
+	name = "waris"
+	# error = "Kuch Nhi........"
+	# if request.method=="POST":
+	# 	Username = request.form.get("username")
+	# 	Password = request.form.get("password")
+	# 	print("******************************************************")
+	# 	print("******* Username = ", Username)
+	# 	print("******* Password = ", Password)
+	# 	print("******************************************************")
+	# 	if Username == "admin":
+	# 		error = "Welcome hoo!!"
+	# 	else:
+	# 		error = "username nhi match hua!! :("
+	# 	if Username not in database:
+	# 		return render_template('login.html', info='Invalid User')
+	# 	else:
+	# 		if database[Username] != Password:
+	# 			return render_template('login.html', info='Invalid Password')
+	# 		else:
+	# 			return render_template('index.html', name = Username)
 
 	return render_template('login.html')
+
 
 @app.route('/Employer', methods=['POST', 'GET'])
 def Employer():
