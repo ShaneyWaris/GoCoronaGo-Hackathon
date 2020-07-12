@@ -3,7 +3,7 @@ from bson import ObjectId
 
 connection = MongoClient("mongodb+srv://test:test@cluster0.cxhd5.mongodb.net/test?retryWrites=true&w=majority")
 
-Employees_database = connection.get_database('Employees_DB')	# to fetch the database
+Employees_database = connection.get_database('LoginDetails_database')	# to fetch the database
 
 Employees_collection = Employees_database.Employees_record # this is the collection object
 
@@ -26,3 +26,14 @@ def Employees_all_data():
 def Employees_remove_data(document_id):
 	document = Employees_collection.delete_one({'_id':ObjectId(document_id)})
 	return document.acknowledged
+
+def Authentication(email, password):
+	try:
+		data = dict(Employees_collection.find_one({'Email_id':email}))
+		if data['Password'] == password:
+			return True, data['Name']
+		else:
+			return False, "Invalid Password"
+	except TypeError:
+		return False, "Invalid Email"
+
