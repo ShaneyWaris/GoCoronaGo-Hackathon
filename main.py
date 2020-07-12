@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify
 from databse import *
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', template_folder="./templates")
 
 who = ""
 Employee_sector = ""
