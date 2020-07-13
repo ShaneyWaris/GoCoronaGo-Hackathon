@@ -27,13 +27,4 @@ def Employees_remove_data(document_id):
 	document = Employees_collection.delete_one({'_id':ObjectId(document_id)})
 	return document.acknowledged
 
-def Authentication(email, password):
-	try:
-		data = dict(Employees_collection.find_one({'Email_id':email}))
-		if data['Password'] == password:
-			return True, data['Name']
-		else:
-			return False, "Invalid Password"
-	except TypeError:
-		return False, "Invalid Email"
 

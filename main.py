@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, url_for, redirect
 from Employees_database import *
 from Employers_database import *
+from LoginDetails_database import *
 import os
+
 
 # Flask app.
 app = Flask(__name__)
@@ -54,7 +56,7 @@ def About():
 
 @app.route('/RecommendedJobs')
 def RecommendedJobs():
-    return render_template('recommendedJobs.html')
+	return render_template('recommendedJobs.html')
 
 @app.route('/addEducation')
 def addEducation():
@@ -66,7 +68,7 @@ def addExperience():
 
 @app.route('/AvailableJobs')
 def AvailableJobs():
-    return render_template('availableJobs.html')
+	return render_template('availableJobs.html')
 
 @app.route('/ResumeBuilder')
 def ResumeBuilder():
@@ -96,7 +98,6 @@ def EmployeeProfile():
 def EmployerProfile():
 	return render_template('EmployerProfile.html')
 
-
 @app.route('/FixMeeting')
 def FixMeeting():
 	return render_template('FixMeeting.html')
@@ -120,7 +121,6 @@ def EmployeeInterview():
 @app.route('/index')
 def index():
 	return render_template('index.html')
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def SignUp():
@@ -215,20 +215,30 @@ def Employer():
 	return render_template('Employer.html')
 
 def add_Employer():
-    data = {
+	data = {
 		'Sector': Employer_sector,
 		'Name': Employer_name,
-    	'Username': Employer_username,
-	    'Password': Employer_password,
-	    'Company_Name': Employer_company_name,
-	    'Company_Size': Employer_company_size,
-	    'Email': Employer_email,
-	    'Position': Employer_position,
+		'Username': Employer_username,
+		'Password': Employer_password,
+		'Company_Name': Employer_company_name,
+		'Company_Size': Employer_company_size,
+		'Email': Employer_email,
+		'Position': Employer_position,
 		'Sector_name': Employer_sector_name,
-	    'Phone_no': Employer_phone,
-	    'Website': Employer_website
+		'Phone_no': Employer_phone,
+		'Website': Employer_website
 	}
-    Employers_insert_data(data)
+	Employers_insert_data(data)
+
+	data2 = {
+		'Email_id': Employer_email,
+		'Password':Employer_password,
+		'Username': Employer_username,
+		'who': "Employer"
+	}
+	SignUp_insert_data(data2)
+
+
 
 
 def add_Employee_Organized():
@@ -247,6 +257,14 @@ def add_Employee_Organized():
 	}
 	Employees_insert_data(data)
 
+	data2 = {
+		'Email_id': Employee_email,
+		'Password': Employee_password,
+		'Username': Employee_username,
+		'who': "Employee"
+	}
+	SignUp_insert_data(data2)
+
 def add_Employee_Unorganized():
 	data = {
 		'Sector': Employee_sector,
@@ -260,24 +278,48 @@ def add_Employee_Unorganized():
 	}
 	Employees_insert_data(data)
 
+	data2 = {
+		'Email_id': Employee_email,
+		'Password': Employee_password,
+		'Username': Employee_username,
+		'who': "Employee"
+	}
+	SignUp_insert_data(data2)
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
 	if (request.method == 'POST'):
 		Email = request.form.get('email')
 		Password = request.form.get('password')
-		print("**********")
-		result, current_user = Authentication(Email, Password)
+
+		# Authenticate the Email id and Password.
+		result, who, current_user_name = Authentication(Email, Password)
 		if(result):
-			return render_template('index.html', user = current_user)
-		if (not result and current_user == "Invalid Email"):
+			if (who == "Employee"):
+				return render_template('index.html', user = current_user_name)
+			if (who == "Employer"):
+				return render_template('EmployerIndex.html', user = current_user_name)
+
+		if (not result and current_user_name == "Invalid Email"):
 			print("Invalid Email Id")
 			return render_template('login.html')
-		if(not result and current_user == "Invalid Pasword"):
+
+		if(not result and current_user_name == "Invalid Pasword"):
 			print("Invalid Password")
 			return render_template('login.html')
 
 	return render_template('login.html')
+
+def Authentication(email, password):
+	try:
+		data = dict(SignUp_collection.find_one({'Email_id':email}))
+		if data['Password'] == password:
+			return True, data['who'], data['Username']	# return the user of that email id.
+		else:
+			return False, "", "Invalid Password"
+	except TypeError:
+		return False, "", "Invalid Email"
 
 
 @app.route('/contactUs', methods=['POST', 'GET'])
@@ -294,4 +336,4 @@ def Contact():
 port = int(os.getenv('PORT', 8000))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port, debug=True)
+	app.run(host='0.0.0.0', port=port, debug=True)
