@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, url_for, redirect
-from Employees_databse import *
-from Employer_database import *
+from Employees_database import *
+from Employers_database import *
 import os
 
 # Flask app.
 app = Flask(__name__)
-port = int(os.getenv('PORT', 8000))
+
+# app.config()
 # User is Employee or Employer is stored in "who" variable.
 who = ""
 
@@ -290,7 +291,7 @@ def Contact():
 
 	return render_template('contactUs.html')
 
-
+port = int(os.getenv('PORT', 8000))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port, debug=True)
