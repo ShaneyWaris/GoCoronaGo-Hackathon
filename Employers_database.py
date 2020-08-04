@@ -5,7 +5,8 @@ connection = MongoClient("mongodb+srv://test:test@cluster0.cxhd5.mongodb.net/tes
 
 Employers_database = connection.get_database('Employers_DB')	# to fetch the database
 
-Employers_collection = Employers_database.Employers_record # this is the collection object
+# this is the collection object
+Employers_collection = Employers_database.Employers_record
 
 def Employers_insert_data(data):
 	document = Employers_collection.insert_one(data)
@@ -14,6 +15,7 @@ def Employers_insert_data(data):
 def Employers_update_or_create(document_id, data):
 	document = Employers_collection.update_one({'_id':ObjectId(document_id)}, {"$set":data}, upsert = True)
 	return document.acknowledged 	# return true or false
+
 
 def Employers_get_single_data(document_id):
 	data = Employers_collection.find_one({'_id': ObjectId(document_id)})
