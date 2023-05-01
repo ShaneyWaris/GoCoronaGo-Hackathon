@@ -1,6 +1,6 @@
 defusedxml==0.6.0
 dnspython==1.16.0
-Flask==1.1.2
+Flask==2.3.2
 Flask-Mail==0.9.1
 Flask-PyMongo==2.3.0
 Flask-SQLAlchemy==2.4.1
